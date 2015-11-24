@@ -1,0 +1,372 @@
+Action Bank: A High-Level Representation of Activity in Video
+Source Code and Data Files
+
+Authors: Sreemannanth Sadanand and Jason J. Corso
+Email: sreemana@buffalo.edu, jcorso@buffalo.edu
+
+Other contributions:
+- Video class: Julian Ryde and Sagar Waghmare
+  (Note, this is an earlier bifurcated version of nDvision: 
+  https://launchpad.net/ndvision) and changed to support multithreaded
+  video loading.
+- SVM code (class and examples): David Johnson
+- Help with cleaning up the code and making the website: Albert Chen
+
+Date: 2012-05-25
+Version: 1.0
+
+See: http://www.cse.buffalo.edu/~jcorso/r/actionbank/
+     On this site, the code is available, as well as many action bank computed 
+     results/data on various standard data sets.
+
+Please report bugs to jcorso@buffalo.edu
+
+******************
+**** OVERVIEW ****
+
+The Action Bank method is a new high-level representation of activity in video.  
+In short, it embeds a video into an "action space" spanned by various action 
+detector responses (correlation/similarity volumes), such as 
+walking-to-the-left, drumming-quickly, etc.  The individual action detectors in 
+our implementation of action bank are template based detectors using the action 
+spotting work of Derpanis et al. CVPR 2010.  Each individual action detector 
+correlation video volume is transformed into a response vector by volumetric 
+max-pooling (3-levels for a 73-dimension vector);  in our library and methods 
+there are 205 action detector templates in the bank, sampled broadly in 
+semantic and viewpoint space.
+
+This download includes the core code, our action bank templates, example code 
+for taking the action bank representation and learning a one vs. all linear SVM 
+classifier, example scripts for running over some typical data sets.
+
+This document includes installation instructions, brief instructions on using 
+the code, and brief description of the representation format itself.
+
+** Citing Action Bank
+
+If you use this code (the action bank method or action spotting 
+implementation), we request that you cite our CVPR 2012 paper.
+
+---------------------------------------------------------------------------
+
+  S. Sadanand and J. J. Corso. Action bank: A high-level representation of 
+  activity in video. In Proceedings of IEEE Conference on Computer Vision and 
+  Pattern Recognition, 2012.
+
+---------------------------------------------------------------------------
+
+** A Note of Caution
+
+Action bank is somewhat computationally expensive.  On the website listed 
+above, we have made the action bank representations of various standard video 
+data sets available to allow for ease of adoption of this new high-level 
+representation.  (KTH, UCFSports, UCF50, HMDB)  If you want us to compute 
+Action Bank on a different data set, let us know and we can try to do it for 
+you.
+
+
+
+
+*****************
+**** LICENSE ****
+
+See LICENSE file.  Generally, free for academic/research/non-commercial use.  
+For other use, contact us.  Derivative works need to be open-sourced (as this 
+is), or a different license needs to be negotiated.
+
+
+
+**********************
+**** INSTALLATION ****
+
+This code is in Python.  We realize this strays from most computer vision code, 
+which tends to rely on Matlab.  But, we like Python, and the output can easily 
+can converted to Matlab (see Example Uses below).  Using Python is not that 
+hard.
+
+Since it is in python, there is no compilation.  Just download it and *go*.
+
+
+** Dependencies
+
+Python (2.7.3)
+Numpy/Scipy
+Matplotlib
+ffmpeg (system binaries)
+Shogun (only for the classification routines) (modular python version)
+The only other packages we import are argparse, glob, gzip, multiprocessing, os, random, subprocess, sys, and time.  Depending on your python installation some of these may be missing.
+
+Note.  For academic use, we recommend the Enthought Python Distribution 
+(http://www.enthought.com/products/epd.php), as it packages all python 
+dependencies together, except for Shogun.  
+
+
+** Platform support
+
+We have tested it on Linux and Mac OS X.  It should work on Windows too (since 
+it is Python), but we have not tested that.
+
+
+***************************************************
+**** HOWTO / INSTRUCTIONS ON USING ACTION BANK ****
+
+In the package, you find the following files:
+ 
+code/actionbank.py --- the core action bank routines and main driver code
+code/spotting.py   --- the action spotting detector
+code/video.py      --- a python video class (stores videos as memmapped ndarrays)
+code/ab_svm.py     --- an example svm based classifier for action bank
+scripts/ab_simple.py - an example script that will run a video data set through 
+                     -  the full action bank set
+scripts/ab_matlab.py - a utility script to convert the output of the python code 
+                     -  into a form that Matlab can read (.mat)
+scripts/ab_concat.py - a utility script to concatenate the action bank vectors 
+                     -  from multiple runs (presumably runs at different scales).
+bank_templates/*   --- the full set of action bank video templates that we used 
+                       and stored in their action spotting featurized form
+
+Scripts to generate results from CVPR.  This requires you download the data 
+from the action bank website or recompute it.
+
+scripts/ab_kth_svm.py -  KTH train/test split
+scripts/ab_ucfsports_svm.py -  Leave One Out Cross-Validation
+scripts/ab_ucf50_svm.py -  10-fold cross-validation
+scripts/ab_hmdb51_svm.py -  10-fold cross-validation
+
+
+
+** Running Action Bank Part One
+
+  Simple way to learn: scripts/ab_simple.py
+
+    scripts/ab_simple.bash is a simple script that will run action bank over a 
+    directory of videos.  Scaling the videos down to have max 240 columns.  It 
+    will not do any classification, it will just compute the action bank 
+    representation.
+
+    Edit the script so that INPUT is the directory of videos to be processed and 
+    OUTPUT is the place to store the results.
+
+    The file should look like this if my input directory is /tmp/in and output 
+    directory is /tmp/out.  E.g., /tmp/in/video0.avi and /tmp/in/video1.avi 
+    would be two videos in /tmp/in.  OUTPUT need not exist before running.
+ 
+    -----
+      INPUT=/tmp/foo
+      OUTPUT=/tmp/bar
+      ARGS="--onlybank -w 320"
+
+      PYTHONPATH=$PYTHONPATH:../code/
+
+      python ../code/actionbank.py $ARGS $INPUT $OUTPUT
+    -----
+
+    Run it from inside of scripts:  ./ab_simple.bash
+
+
+** What Does Action Bank Compute/Store?
+
+  The action bank representation is a high-dimensional vector (73 dimension for 
+  each bank template, which are concatenated together) that embeds a video into 
+  a semantically rich action-space.  Each 73-dimension subvector is a 
+  volumetrically max-pooled individual action detection response.
+
+  When processing, actionbank.py will do two main things:
+
+  1.  It will "featurize" the video, which computes a 7-channel decomposition of 
+      the video into spatiotemporal oriented energies (based on a slight 
+      modification of the action spotting method).
+
+      For each video, a XX_featurized.npy.gz file stores this 7-channel 
+      decomposition. 
+
+      For the example above, you would hence find two new files in /tmp/out:
+        /tmp/out/video0.avi_featurized.npy.gz
+        /tmp/out/video1.avi_featurized.npy.gz
+        
+  2.  It will then apply the bank to each of the videos, which involves, correlating 
+      each channel of the 7-channel decomposed representation via Bhattacharyya 
+      matching (actually it only uses 5 of them, but that is in the details, see the 
+      code) with all bank template videos, summing them to yield a correlation 
+      volume, and finally doing 3-level volumetric max-pooling.  For each bank 
+      template video, this outputs a 73-dimension vector, which are all stacked 
+      together over the bank templates (205 in our release).  A single-scale bank 
+      embedding is hence a 14965 dimension vector.
+  
+      For each video, a XX_banked.npy.gz file stores the bank embedding vector.
+
+      For the example above, you would hence find two new files in /tmp/out:
+        /tmp/out/video0.avi_banked.npy.gz
+        /tmp/out/video1.avi_banked.npy.gz
+
+  Note that actionbank.py caches all of its computation and checks if a cached 
+  version is present before computing it; if a cached version is present, then 
+  it simply loads it rather than recomputing it.  Hence you can called 
+  actionbank.py repeatedly on the same input/output data directories and it will only 
+  compute things that have not yet been computed.
+
+
+** Running Action Bank Part Two
+
+  The actionbank.py script is the main driver of the action bank code and has a 
+  detailed help system.  It also has the ability to walk multiple an entire 
+  directory tree and bank all of the videos in it, replicating them to the 
+  output directory tree, which is created to match that of the input one.
+
+  It has the ability to reduce the videos' spatial resolution.
+
+  The actionbank.py script also contains an example of training an SVM 
+  classifier and doing k-fold cross-validation.  This will only work if the 
+  directory structure is two-layered, with the first-layer containing only 
+  directories and each directory represents one class-label and the second-layer 
+  containing just videos in each directory.
+    For example:
+    /tmp/in/class1/video0.mp4 ...  /tmp/in/class1/video100.mp4
+    /tmp/in/class2/video0.mp4 ...  /tmp/in/class2/video100.mp4
+    ...
+  This SVM code is really only an example; action bank is not restricted to SVMs 
+  or the way we learn the SVMs in this example code.
+
+
+** Converting to Matlab
+
+  You can easily convert the representation computed by actionbank.py into a 
+  form Matlab can read.
+
+  scripts/ab_matlab.py is a simply Python script to do this.  You just invoke it 
+  with the path to the Python output and it will convert each _banked.npy.gz 
+  file into a _banked.mat file.
+
+  E.g.,:  inside of scripts:
+      export PYTHONPATH=../code; python ab_matlab.py /tmp/out
+
+  For the example above, you will see
+    /tmp/out/video0.avi_banked.mat
+    /tmp/out/video1.avi_banked.mat
+
+
+** How to Add a New Template Into the Bank
+
+  In our implementation, action detectors are simply templates.  You can easily 
+  add a new one to the bank by extracting a sub-video (we manually did this for 
+  creating our bank by roughly cropping the videos to contain only the volume of 
+  the action itself) and running actionbank.py with the --newbank switch.
+
+  For a new bank video /tmp/newtemplate.avi you would call:
+
+    python actionbank.py -n /tmp/newtemplate.avi
+
+  You will find a new file in bank_templates call newtemplate.avi.npy.gz
+
+  Be careful of name-clashes.
+
+  You can, of course, customize which bank directory it is sent to with the -b 
+  switch.
+
+  There is no functionality to compute only a subset of the bank templates 
+  against a video dataset, such as only those that are added.  We suggest, you 
+  create a separate bank templates folder and then subsequently concatenate the 
+  two bank vectors together.
+
+
+** Classifying with Action Bank
+
+The classification routines in this code release use shogun.  You will need to 
+install shogun first 
+(http://www.shogun-toolbox.org/doc/en/current/installation.html).  
+
+These routines are inside of code/ab_svm.py and are provided more as an example 
+as how the action bank representation can be used (these are essentially the 
+routines we used to generate the activity recognition results in our CVPR 2012 
+paper).  They are not intended to be the final best classifier for using action 
+bank.
+
+If you are looking for a specific point of comparison to our method on a new 
+data set, you probably could just use these methods.  Get in touch with us if 
+you want some help.  If you are doing a comparison against a data set for which 
+we've computed the bank (and is on the website), then we've probably also 
+computed the classification scores.  You can get in touch with us for them 
+too...
+
+
+** Scales!  A mini-HowTo on how scale is parameterized in the code.
+
+It is important to have some understanding of how scale works in the code to make the best use of the system.  Some facts:
+
+  1.  Version 1.0 actionbank.py only computes the bank feature vector at a 
+        single scale.
+  2.  The bank_templates provided and those that are computed via the "-n" add 
+        a new template to the bank option are saved at native scale (as that of 
+        the inputted videos) and not reduced in any way.
+  3.  The script scripts/ab_concat.py is used to concat to parallel action bank 
+        feature vector directories into a single representation (two scales at 
+        a time).
+  4.  We have only have experimented with two scales (because of the 
+        computation requirements of going to more).
+  5.  In the current version, all scale-factor modify only spatial resolution 
+        and not temporal resolution.
+
+Now, there are four unique parameters that govern scale (this may sound complicated, but it covers all possible variations of what we wanted to try and what you may want to try).  The options are
+
+   -w  Specifies the *maximum width* (number of pixel columns) in a video.  All videos loaded into the actionbank.py system are first reduced in size to have this many columns at max (if a video already have fewer columns, then it is not modified).  The frame-ratio (w*h) of the video is maintained.
+
+   -e  Specifies the factor by which to reduce the bank template videos (must be an integer in the current code).  So, "-e 2" will reduce the bank templates by a factor of 2 in w*h only (not time).
+
+   -f  Specifies the factor by which to reduce the input videos *before* performing the space-time oriented energy featurization.  We always set "-f 1".
+
+   -g  Specific the factor by which to reduce the input videos *after* performing the space-time oriented engery featurization but before computing the correlation with the bank templates.  For most of our 1-scale CVPR 2012 results, e.g., we set "-g 2".
+
+
+You can combine the outputs of running the action bank over a set of videos at two different scales very easily with the scripts/ab_concat.py script.  For example, say you have input videos in /data/input, and you ran the following two instances of the actionbank.py:
+
+   python actionbank.py -e 1 -f 1 -g 2 /data/input /scratch/out112
+   python actionbank.py -e 1 -f 1 -g 2 /data/input /scratch/out212
+
+Then you can concatenate the responses by running (from inside of scripts/):
+
+   python ab_concat.py /data/out112 /data/out212 /data/out_combined
+
+Note that ab_concat.py does not do any fancy error checking to ensure that the input directories are matching up.
+
+We're welcome to suggestions on how to simplify this scale code (and the rest of the code)...
+
+
+
+******************************************************
+**** Special Notes about this version of the code
+
+-- This version of the code has been revised and updated since our CVPR 2012 
+submission.  (That code would have been very hard to use directly...)  So, 
+direct reproduction of the results from the paper is not exactly possible; 
+ballpark accuracies have been achieved in our results (when we tested this 
+version).
+
+-- This method is computationally intensive.  We hence will release the banked 
+feature vectors on the website.
+
+-- The code implements both action bank (our CVPR 2012 paper) and the action 
+spotting (Derpanis et al. CVPR 2010).  Our implementation of their method is 
+standalone the sense that (1) we did not have any access to their code to 
+implement it and (2) you can use it separately from action bank.  We have not 
+provided any specific details in this document on how to do that, but are happy 
+to help you if you contact us directly.  We want you to cite our paper if you 
+use only the spotting implementation and we hope you would cite their paper in 
+both cases!
+
+-- "Warning: invalid value encountered in divide" is outputted by Python, but 
+is handled in our code fine.  Don't worry about this.
+
+-- GZipped Numpy.save (npy.gz) files are used over Numpy.savez (npz) files for 
+a number of reasons (but most are arbitrary).  Simple npz files have no 
+compression (this may change/have changed).  Compression using gzip allows for 
+non-python uncompression.  The npz format requires extra code when loading to 
+unpackage the contents.  
+
+-- This code uses ffmpeg to read videos.  It can hence decode any video that 
+your ffmpeg can.  It does not filter files by extension and will try to process 
+"everything in its path"; if it fails to decode a file then it will just skip 
+it.
+
+
+
+Happy Banking!

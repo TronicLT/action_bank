@@ -1,22 +1,67 @@
-The MIT License (MIT)
+NON-EXCLUSIVE, NON-COMMERCIAL, ACADEMIC AND RESEARCH USE LICENSE AGREEMENT
 
-Copyright (c) 2015 TronicLT
+PLEASE READ THIS DOCUMENT CAREFULLY BEFORE UTILIZING THE PROGRAM
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+BY UTILIZING THIS PROGRAM, YOU AGREE TO BECOME BOUND BY THE TERMS OF THIS LICENSE.  IF YOU DO NOT AGREE TO THE TERMS OF THIS LICENSE, DO NOT USE THIS PROGRAM OR ANY PORTION THEREOF IN ANY FORM OR MANNER.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+THE RESEARCH FOUNDATION OF STATE UNIVERSITY OF NEW YORK ("Foundation"), who has a legal interest in all code and accompanying documentation for the Action Bank 1.0 software (hereinafter "Program"), hereby licenses the Program to you by for use only under the terms of this Agreement, and Foundation reserves all rights, including any rights not expressly granted to you.  
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+1.  In accordance with the terms and conditions set forth herein, this License allows you, for non-commercial academic and research purposes ONLY, to:
+
+(a) make copies and distribute copies of the Program's source code provided that any such copy clearly displays any and all appropriate copyright notices and disclaimer of warranty as set forth in Article 5 and 6 of this License.  All notices that refer to this License, the developers of this Program, and to the disclaimer of any warranty must be kept intact at all times.  A copy of this License must accompany any and all copies of the Program distributed to third parties.
+
+Notwithstanding anything to the contrary contained herein, a fee may be charged to cover the actual cost of the physical act of transferring a copy to a third party.  AT NO TIME WILL THE PROGRAM BE SOLD  EITHER ALONE OR INCORPORATED WITH OTHER PROGRAM(S) WITHOUT ENTERING INTO A SEPARATE AGREEMENT WITH FOUNDATION.  Sales of the Program include:  (1) integration of all or a portion of the Program into a product for sale, lease or license by or on your behalf to any third party; or (2) distribution of the Program to any third party that needs it to commercialize a product sold, leased or licensed on your behalf.
+
+(b)  modify the original copy or copies of the Program or any portion thereof ("Modification(s)").  Modifications may be copied and distributed for non-commercial academic and research purposes ONLY, under the terms and conditions as set forth in Section 1(a) above, provided the following conditions are met:
+
+i) any and all modified files must be affixed with prominent notices that you have changed the files and the date that the changes occurred.
+		
+ii) any work that you distribute, publish, or make available, that in whole or in part contains portions of the Program or derivative work thereof, must be licensed at no charge to all third parties under the terms of this License.
+
+iii) if the modified program normally reads commands interactively when run, you must cause it, when started running for such interactive use in the most ordinary way, to display and/or print an announcement with all appropriate copyright notices and disclaimer of warranty as set forth in Article 5 and 6 of this License to be clearly displayed.  In addition, you must provide reasonable access to this License to the user.
+
+Any portion of a Modification that can be reasonably considered independent of the Program and separate work in and of itself is not subject to the terms and conditions set forth in this License as long as it is not distributed with the Program or any portion thereof.
+
+
+2. This License further allows you to copy and distribute the Program or a work based on it, as set forth in Article 1 Section b in object code or executable form under the terms of Article 1 above provided that you also either:
+
+i) accompany it with complete corresponding machine-readable source code, which must be distributed under the terms of Article 1, on a medium customarily used for software interchange; or,
+
+ii) accompany it with a written offer, valid for no less than three (3) years from the time of distribution, to give any third party, for no consideration greater than the cost of physical transfer, a complete machine-readable copy of the corresponding source code, to be distributed under the terms of Article 1 on a medium customarily used for software interchange; or,
+
+
+3.  Export Controls.
+
+You agree to comply with all United States laws and regulations controlling the export of certain commodities and technical data, including without limitation all Export Control Regulations of the United States Department of Commerce and International Traffic In Arms Regulations. In order to facilitate the exchange of technical information under this Agreement, therefore, you give your assurance to Foundation that you will not knowingly, unless prior authorization is obtained from the appropriate office, export directly or indirectly any technical data or software received from Foundation under this Agreement to any restricted country or party, in each case, except in compliance with all U.S. laws and regulations.  Foundation does not make any representation regarding whether or not a license is required.  Foundation represent, in any case, that a license will be issued by the U.S. Department of Commerce or other appropriate governmental entity.
+
+
+4.  Termination. 
+
+If at any time you are unable to comply with any portion of this License you must immediately cease use of the Program and all distribution activities involving the Program or any portion thereof.  
+
+
+5.  Disclaimer of Warranties and Limitation on Liability.
+
+YOU ACCEPT THE  PROGRAM ON AN "AS IS" BASIS.  FOUNDATION MAKES NO WARRANTY THAT ALL ERRORS CAN BE OR HAVE BEEN ELIMINATED FROM PROGRAM.  FOUNDATION WILL NOT BE RESPONSIBLE FOR LOSSES OF ANY KIND RESULTING FROM THE USE OF PROGRAM AND ITS ACCOMPANYING DOCUMENT(S), AND CAN IN NO WAY PROVIDE COMPENSATION FOR ANY LOSSES SUSTAINED, INCLUDING BUT NOT LIMITED TO ANY OBLIGATION, LIABILITY, RIGHT, CLAIM OR REMEDY FOR TORT, OR FOR ANY ACTUAL OR ALLEGED INFRINGEMENT OF PATENTS, COPYRIGHTS, TRADE SECRETS, OR SIMILAR RIGHTS OF THIRD PARTIES, NOR ANY BUSINESS EXPENSE, MACHINE DOWNTIME OR DAMAGES CAUSED TO YOU BY ANY DEFICIENCY, DEFECT OR ERROR IN PROGRAM OR MALFUNCTION THEREOF, NOR ANY INCIDENTAL OR CONSEQUENTIAL DAMAGES, HOWEVER CAUSED.  FOUNDATION DISCLAIMS ALL WARRANTIES, BOTH EXPRESS AND IMPLIED RESPECTING THE USE AND OPERATION OF PROGRAM AND ITS ACCOMPANYING DOCUMENTATION, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR PARTICULAR PURPOSE AND ANY IMPLIED WARRANTY ARISING FROM COURSE OF PERFORMANCE, COURSE OF DEALING OR USAGE OF TRADE.  FOUNDATION MAKES NO WARRANTY THAT PROGRAM IS ADEQUATELY OR COMPLETELY DESCRIBED IN, OR BEHAVES IN ACCORDANCE WITH ANY ACCOMPANYING DOCUMENTATION.  THE USER OF PROGRAM IS EXPECTED TO MAKE THE FINAL EVALUATION OF PROGRAM'S USEFULNESS IN USER'S OWN ENVIRONMENT.
+
+Foundation makes no representation that the software furnished hereunder does not infringe any copyright or patent.
+
+Foundation will have no obligation for support or maintenance of Program.
+
+6.  Copyright Notice.
+
+THE SOFTWARE AND ACCOMPANYING DOCUMENTATION ARE COPYRIGHTED WITH ALL RIGHTS RESERVED BY FOUNDATION.  UNDER UNITED STATES COPYRIGHT LAWS, THE SOFTWARE AND ITS ACCOMPANYING DOCUMENTATION MAY NOT BE COPIED EXCEPT AS GRANTED HEREIN. 
+
+You acknowledge that Foundation is the sole owner of Program, including all copyrights subsisting therein.  Any and all copies or partial copies of Program made by you will bear the copyright notice set forth below and affixed to the original version or such other notice as Foundation will designate.  Such notice will also be affixed to all improvements or enhancements of Program made by you or portions thereof in such a manner and location as to give reasonable notice of Foundation's copyright as set forth in Article 1.
+
+Said copyright notice will read as follows:
+
+Copyright 2012
+The Research Foundation of State University of New York
+All Rights Reserved
+
+7. Other Licenses
+The Program utilizes unmodified versions of the software listed below.  Any use or modification of such software is subject to the respective license agreements:
+* Python 2.7.3, Copyright  2001-2012 Python Software Foundation; All Rights Reserved.  
+* Scipy/Numpy, Copyright 1998 Regents of the University of California; All Rights Reserved. 
 
