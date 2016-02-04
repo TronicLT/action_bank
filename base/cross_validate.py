@@ -1,10 +1,6 @@
 from __future__ import division
 
-import glob
-import gzip
-import numpy as np
-import os
-import os.path
+import numpy
 import random as rnd
 import scipy.io as sio
 from multiprocessing import Pool
@@ -83,7 +79,7 @@ def cross_validate(data, labels, folds, classifier=ab_svm.SVMLinear, nclass=1, m
 
     for i in range(folds - 1):
         print 'In fold ', str(i)
-        test_divisions[i] = rnd.sample(items, int(np.floor(n / folds)))
+        test_divisions[i] = rnd.sample(items, int(numpy.floor(n / folds)))
         items.difference_update(test_divisions[i])
 
     test_divisions[folds - 1] = list(items)
@@ -95,11 +91,11 @@ def cross_validate(data, labels, folds, classifier=ab_svm.SVMLinear, nclass=1, m
 
     # run folds
     if nclass == 1:
-        preds = np.zeros(n, dtype=np.int32)
-        accs = np.zeros(folds, dtype=np.float64)
+        preds = numpy.zeros(n, dtype=numpy.int32)
+        accs = numpy.zeros(folds, dtype=numpy.float64)
     else:
-        preds = np.zeros((n, nclass), dtype=np.int32)
-        accs = np.zeros((folds, 3), dtype=np.float64)
+        preds = numpy.zeros((n, nclass), dtype=numpy.int32)
+        accs = numpy.zeros((folds, 3), dtype=numpy.float64)
 
     telabs = [None] * folds
     preds = [None] * folds
@@ -140,56 +136,58 @@ def cross_validate(data, labels, folds, classifier=ab_svm.SVMLinear, nclass=1, m
         else:
             preds = classifier(trdat, trlabs, tedat, **classargs)
             if nclass == 1:
-                accs[i] = np.float64((np.equal(preds, telabs[i])).sum()) / len(test_divisions[i])
+                accs[i] = numpy.asarray((numpy.equal(preds, telabs[i])).sum(), dtype='float64') / len(test_divisions[i])
             else:
-                taccs = np.zeros((preds.shape[0], nclass), dtype=np.uint8)
-                taccs2 = np.zeros(nclass)
+                taccs = numpy.zeros((preds.shape[0], nclass), dtype=numpy.uint8)
+                taccs2 = numpy.zeros(nclass)
                 for j in xrange(nclass):
-                    taccs[:, j] = (np.equal(preds[:, j], telabs[i]))
-                    taccs2[j] = np.float64((taccs[:, j]).sum()) / len(test_divisions[i])
+                    taccs[:, j] = (numpy.equal(preds[:, j], telabs[i]))
+                    taccs2[j] = numpy.asarray((taccs[:, j]).sum(), dtype='float64') / len(test_divisions[i])
 
                 # compute accuracy of first prediction, maximum accuracy and relaxed accuracy
                 print "Accuracy for fold {0}: {1}%".format(taccs2[0])
                 accs[i, 0] = taccs2[0]
                 accs[i, 1] = taccs2.max()
-                accs[i, 2] = np.float64((taccs.sum(axis=1) > 0).sum()) / len(test_divisions[i])
+                accs[i, 2] = numpy.asarray((taccs.sum(axis=1) > 0).sum(), dtype='float64') / len(test_divisions[i])
 
     # retrieve results and measure accuracy
     for i in xrange(folds):
 
         if multiprocessing and save_path is None:
             if nclass == 1:
-                accs[i] = np.float64((np.equal(preds[i].get(), telabs[i])).sum()) / len(test_divisions[i])
+                accs[i] = numpy.asarray((numpy.equal(preds[i].get(), telabs[i])).sum(), dtype='float64') / len(
+                    test_divisions[i])
             else:
                 preds[i] = preds[i].get()
-                taccs = np.zeros((preds[i].shape[0], nclass), dtype=np.uint8)
-                taccs2 = np.zeros(nclass)
+                taccs = numpy.zeros((preds[i].shape[0], nclass), dtype=numpy.uint8)
+                taccs2 = numpy.zeros(nclass)
                 for j in xrange(nclass):
-                    taccs[:, j] = (np.equal(preds[i][:, j], telabs[i]))
-                    taccs2[j] = np.float64((taccs[:, j]).sum()) / len(test_divisions[i])
+                    taccs[:, j] = (numpy.equal(preds[i][:, j], telabs[i]))
+                    taccs2[j] = numpy.asarray((taccs[:, j]).sum(), dtype='float64') / len(test_divisions[i])
 
                 # compute accuracy of first prediction, maximum accuracy and relaxed accuracy
                 print "Accuracy for fold {0}: {1}%".format(taccs2[0])
                 accs[i, 0] = taccs2[0]
                 accs[i, 1] = taccs2.max()
-                accs[i, 2] = np.float64((taccs.sum(axis=1) > 0).sum()) / len(test_divisions[i])
+                accs[i, 2] = numpy.asarray((taccs.sum(axis=1) > 0).sum(), dtype='float64') / len(test_divisions[i])
 
         elif multiprocessing and (save_path is not None):
             temp = preds[i].get()
             sio.savemat(os.path.join(save_path, "fold_" + str(i) + "_dat.mat"), temp[1])
             if nclass == 1:
-                accs[i] = np.float64((np.equal(temp[0], telabs[i])).sum()) / len(test_divisions[i])
+                accs[i] = numpy.asarray((numpy.equal(temp[0], telabs[i])).sum(), dtype=numpy.float64) / len(
+                    test_divisions[i])
             else:
                 preds[i] = temp[0]
-                taccs = np.zeros((preds[i].shape[0], nclass), dtype=np.uint8)
-                taccs2 = np.zeros(nclass)
+                taccs = numpy.zeros((preds[i].shape[0], nclass), dtype=numpy.uint8)
+                taccs2 = numpy.zeros(nclass)
                 for j in xrange(nclass):
-                    taccs[:, j] = (np.equal(preds[i][:, j], telabs[i]))
-                    taccs2[j] = np.float64((taccs[:, j]).sum()) / len(test_divisions[i])
+                    taccs[:, j] = (numpy.equal(preds[i][:, j], telabs[i]))
+                    taccs2[j] = numpy.asarray((taccs[:, j]).sum(), dtype='float64') / len(test_divisions[i])
                 # compute accuracy of first prediction, maximum accuracy and relaxed accuracy
                 accs[i, 0] = taccs2[0]
                 accs[i, 1] = taccs2.max()
-                accs[i, 2] = np.float64((taccs.sum(axis=1) > 0).sum()) / len(test_divisions[i])
+                accs[i, 2] = numpy.asarray((taccs.sum(axis=1) > 0).sum(), dtype=numpy.float64) / len(test_divisions[i])
     if multiprocessing:
         pool.close()
 
@@ -205,10 +203,10 @@ def normalise_labels(labs):
     ----------
     labs: 1-dimensional array-like of labels (will be flattened if not 1-dimensional)
     """
-    labs = np.int32(np.array(labs)).flatten()
-    labset = np.unique(labs)
-    newlabs = np.arange(labset.shape[0])
-    temp = np.zeros_like(labs)
+    labs = numpy.array(labs).astype('int32').flatten()
+    labset = numpy.unique(labs)
+    newlabs = numpy.arange(labset.shape[0])
+    temp = numpy.zeros_like(labs)
     for i in xrange(labset.shape[0]):
         temp[labs == labset[i]] = newlabs[i]
     return temp
